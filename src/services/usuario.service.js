@@ -16,7 +16,7 @@ class UsuarioService{
                         const token = { token: sign ({id, nombre, usuario, rol_id})}
                         return { login: true, ...token} 
                     }else{
-                        const error = new Error('datos de login incorrectos')
+                        const error = new Error('datos de login incorrectos, verifique los datos')
                         error.status = 401
                         throw error
                     }
