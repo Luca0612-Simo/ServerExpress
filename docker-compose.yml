@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: tp_backend_app
+    build:
+      context: .       
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:3000" 
+    depends_on:
+      - db            
+    environment:
+      PUERTO: 3000
+      DB_HOST: db      
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_DATABASE: ${DB_DATABASE}
+      JWT_SECRET: ${JWT_SECRET} 
+    networks:
+      - tp-network
+
+  db:
+    container_name: tp_mysql_db
+    image: mysql:8.0  
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS} 
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
+    networks:
+      - tp-network
+
+networks:
+  tp-network:
+    driver: bridge 
+
+volumes:
+  mysql-data: 
