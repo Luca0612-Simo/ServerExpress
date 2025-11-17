@@ -23,9 +23,9 @@ const MateriasComponent = () => {
             } catch (err) {
                 console.error("Error al obtener materias:", err.response?.status, err.message);
                 if (err.response?.status === 401) {
-                    setError('Sesión expirada o privilegios insuficientes.');
+                    setError('privilegios insuficientes.');
                 } else {
-                    setError('Error al cargar las materias. Verifique el backend.');
+                    setError('Error al cargar las materias.');
                 }
             } finally {
                 setIsLoading(false);
