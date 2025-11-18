@@ -7,6 +7,8 @@ import MateriasComponent from './components/Materias';
 import Navbar from './components/navbar';
 import Dashboard from './components/Dashboard';
 import MisMateriasComponent from './components/MisMaterias';
+import AlumnosManagementComponent from './components/AlumnosManagement';
+import AlumnoFormComponent from './components/AlumnoForm';
 
 const AppContent = () => {
     const { token, isAuthenticated, setLoading, initializeAuth, logout } = useAuthStore();
@@ -67,6 +69,9 @@ const AppContent = () => {
                         <>
                             <Route path="/materias" element={<MateriasComponent />} />
                             <Route path="/mis-materias" element={<MisMateriasComponent />} />
+                            <Route path="/alumnos" element={<AlumnosManagementComponent />} />
+                            <Route path="/alumnos/crear" element={<AlumnoFormComponent />} />
+                            <Route path="/alumnos/editar/:id" element={<AlumnoFormComponent />} />
                             <Route path="*" element={<Dashboard />} />
                         </>
                     )}
