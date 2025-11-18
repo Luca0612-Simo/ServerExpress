@@ -25,7 +25,7 @@ const usuario = Joi.string().min(3).max(50).required().messages({
     'number.max':'El username debe tener un maximo de {#limit}'
 })
 
-const contrasena = Joi.string().min(3).max(50).required().messages({
+const contrasena = Joi.string().min(3).max(50).messages({
     'any.required': 'La contraseña es obligatorio',
     'number.min':'La contraseña debe tener un minimo de {#limit}',
     'number.max':'La contraseña debe tener un maximo de {#limit}'
@@ -53,7 +53,7 @@ const putAlumnoSchema = Joi.object({
     nombre : nombre.required(),
     mail : mail.required(),
     usuario : usuario.required(),
-    contrasena : contrasena.required(),
+    contrasena : contrasena,
     usuario_modificacion : usuario_modificacion.required()
 })
 

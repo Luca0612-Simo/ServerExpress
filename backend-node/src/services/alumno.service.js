@@ -36,18 +36,27 @@ class AlumnoService {
     async EditarAlumno(id, datosActualizados) {
         const { nombre, mail, usuario, contrasena, usuario_modificacion } = datosActualizados
         const connection = await getConnection()
-        const hash = await bcrypt.hash(contrasena, 10)
+        let query;
+        let values;
 
-        const query = `update usuarios set 
+
+        if(contrasena && contrasena.trim() != ''){
+            const hash = await bcrypt.hash(contrasena,10)
+            const query = `update usuarios set 
             nombre = ?,
             mail = ?,
-            usuario = ?,
-            contrasena = ?,
+            usuario = ?, contrasena = ?,
             fecha_modificacion = now(),
             usuario_modificacion = ? where id = ? `
-
-        const values = [nombre, mail, usuario, hash, usuario_modificacion, id]
-
+            values = [nombre, mail, usuario, usuario_modificacion, id]
+        }else{
+            query = `update usuarios set 
+                nombre = ?, mail = ?, usuario = ?,
+                fecha_modificacion = now(), usuario_modificacion = ? 
+                where id = ? `;
+                
+            values = [nombre, mail, usuario, usuario_modificacion, id];
+        }
         const result = await connection.query(query, values)
         return result
     }
