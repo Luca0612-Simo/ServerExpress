@@ -13,7 +13,6 @@ const { postAlumnoSchema, putAlumnoSchema } = require('../schemas/alumno.schema'
 const { validatorHandler } = require('../middleware/validator.handler')
 
 const alumnoRouter = express.Router()
-alumnoRouter.use(express.json())
 
 alumnoRouter.post('/',
     checkRoles(1),

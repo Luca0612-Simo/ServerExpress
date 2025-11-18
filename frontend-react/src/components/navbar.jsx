@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogOut, BookOpen, LogIn, Home } from 'lucide-react';
+import { LogOut, BookOpen, LogIn, Home, ListTodo } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 
@@ -22,6 +22,7 @@ const NavLink = ({ to, label, icon: Icon, currentPath }) => {
 
 function Navbar() {
     const { user, isAuthenticated, logout } = useAuthStore();
+    const isAlumno = user?.rol_id === 3; 
     const navigate = useNavigate();
     const location = useLocation();
     const currentPath = location.pathname;
@@ -46,6 +47,15 @@ function Navbar() {
                                 currentPath={currentPath}
                                 to="/"
                             />
+                            {}
+                            {isAlumno && (
+                                <NavLink 
+                                    icon={ListTodo} 
+                                    label="Mis Materias" 
+                                    currentPath={currentPath} 
+                                    to="/mis-materias" 
+                                />
+                            )}
                             <NavLink 
                                 icon={BookOpen} 
                                 label="Materias" 

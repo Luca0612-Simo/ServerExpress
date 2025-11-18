@@ -4,6 +4,7 @@ const service = new InscripcionesService()
 async function InscribirAlumno(req, res, next) {
     try {
         const inscripcion = req.body
+        inscripcion.alumno_id = req.user.id
         inscripcion.usuario_alta = req.user.usuario
 
 
@@ -16,12 +17,18 @@ async function InscribirAlumno(req, res, next) {
 
 async function GetMateriasPorAlumno(req, res, next) {
     try {
-        const result = await service.GetMateriasPorAlumno()
-        res.send(result)
-    } catch (error) {
-        next(error)
-    }
+        if (!req.user || !req.user.id) {
+            const error = new Error("No se pudo identificar al usuario logueado.");
+            error.status = 401; 
+            throw error;
+        }
 
+        const alumnoId = req.user.id; 
+        const result = await service.GetMateriasPorAlumno(alumnoId); 
+        res.send(result);
+    } catch (error) {
+        next(error);
+    }
 }
 
 async function GetAlumnosPorMateria(req, res, next) {

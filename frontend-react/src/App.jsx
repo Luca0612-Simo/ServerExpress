@@ -6,6 +6,7 @@ import LoginComponent from './components/Login';
 import MateriasComponent from './components/Materias';
 import Navbar from './components/navbar';
 import Dashboard from './components/Dashboard';
+import MisMateriasComponent from './components/MisMaterias';
 
 const AppContent = () => {
     const { token, isAuthenticated, setLoading, initializeAuth, logout } = useAuthStore();
@@ -40,9 +41,13 @@ const AppContent = () => {
                 setLoading(false);
             }
         };
+        if (isAuthenticated) { 
+             setLoading(false);
+             return;
+        }
 
         validateTokenAndInitialize(storedToken);
-    }, [initializeAuth, logout, navigate]); 
+    }, [initializeAuth, logout, navigate, isAuthenticated]); 
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -61,6 +66,7 @@ const AppContent = () => {
                     {isAuthenticated && (
                         <>
                             <Route path="/materias" element={<MateriasComponent />} />
+                            <Route path="/mis-materias" element={<MisMateriasComponent />} />
                             <Route path="*" element={<Dashboard />} />
                         </>
                     )}

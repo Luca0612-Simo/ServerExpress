@@ -14,7 +14,14 @@ class UsuarioService{
                 .then(sonIguales => {
                     if(sonIguales){
                         const token = { token: sign ({id, nombre, usuario, rol_id})}
-                        return { login: true, ...token} 
+                        return { 
+                            login: true, 
+                            id,
+                            nombre,
+                            usuario,
+                            rol_id,
+                            ...token
+                        } 
                     }else{
                         const error = new Error('datos de login incorrectos')
                         error.status = 401
