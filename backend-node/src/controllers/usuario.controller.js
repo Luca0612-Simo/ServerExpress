@@ -22,7 +22,16 @@ async function crearUsuario(req,res,next) {
     }
 }
 
+async function validateToken(req, res, next) {
+    try {
+        res.send({ user: req.user, mensaje: 'Token válido' });
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     login,
     crearUsuario,
+    validateToken,
 }

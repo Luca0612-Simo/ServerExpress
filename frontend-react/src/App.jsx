@@ -2,9 +2,8 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import useAuthStore from './store/useAuthStore';
 import apiClient from './components/SharedApi';
-import LoginComponent from './components/LoginComponent';
-import MateriasComponent from './components/MateriasComponent';
-import AlumnosComponent from './components/AlumnosComponent';
+import LoginComponent from './components/Login';
+import MateriasComponent from './components/Materias';
 import Navbar from './components/navbar';
 import Dashboard from './components/Dashboard';
 
@@ -62,7 +61,6 @@ const AppContent = () => {
                     {isAuthenticated && (
                         <>
                             <Route path="/materias" element={<MateriasComponent />} />
-                            <Route path="/alumnos" element={<AlumnosComponent />} />
                             <Route path="*" element={<Dashboard />} />
                         </>
                     )}

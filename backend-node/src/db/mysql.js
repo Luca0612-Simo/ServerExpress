@@ -8,12 +8,25 @@ const dbconfig = {
     database: process.env.DB_DATABASE
 }
 
-const connection = mysql.createConnection(dbconfig)
-    .catch(err => {
-        console.log("no se pudo conectar a la bd ", err.message)
-    })
+let activeConnection = null;
+
+async function connectDB() {
+    try {
+        activeConnection = await mysql.createConnection(dbconfig);
+        console.log("Conexión exitosa.");
+    } catch (err) {
+        console.error("ERROR: No se pudo conectar a la DB.", err.message);
+        throw err; 
+    }
+}
+
+connectDB(); 
 
 function getConnection(){
-    return connection
+    if (!activeConnection) {
+        throw new Error("Conexión a la base de datos no disponible.");
+    }
+    return activeConnection;
 }
-module.exports = getConnection
+
+module.exports = getConnection;
