@@ -4,6 +4,7 @@ const service = new UsuarioService()
 async function login(req,res,next){
     try{
         const data = req.body
+        console.log('Datos recibidos en el login:', data);
         const result = await service.login(data)
         res.send({mensaje: 'Login exitoso', result})
     }catch(error){

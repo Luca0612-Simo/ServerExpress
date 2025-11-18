@@ -12,7 +12,6 @@ const { postInscripcionSchema } = require('../schemas/inscripciones.schema')
 const { validatorHandler } = require('../middleware/validator.handler')
 
 const inscripcionesRouter = express.Router()
-inscripcionesRouter.use(express.json())
 
 inscripcionesRouter.post('/',
     checkRoles(1,3),
@@ -20,7 +19,10 @@ inscripcionesRouter.post('/',
     InscribirAlumno
 )
 
-inscripcionesRouter.get('/', GetMateriasPorAlumno)
+inscripcionesRouter.get('/', 
+    checkRoles(1, 3), 
+    GetMateriasPorAlumno
+)
 inscripcionesRouter.get('/materia/:id',
     checkRoles(1,2),
     GetAlumnosPorMateria)

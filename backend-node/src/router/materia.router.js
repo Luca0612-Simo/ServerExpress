@@ -11,7 +11,6 @@ const { postMateriaSchema, putMateriaSchema } = require('../schemas/materia.sche
 const { validatorHandler } = require('../middleware/validator.handler')
 
 const materiaRouter = express.Router()
-materiaRouter.use(express.json())
 
 materiaRouter.post('/',
     checkRoles(1),

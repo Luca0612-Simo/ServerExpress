@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LogIn } from 'lucide-react';
 import useAuthStore from '../store/useAuthStore';
 import apiClient from './SharedApi';
@@ -8,9 +8,13 @@ import { useNavigate } from 'react-router-dom';
 function LoginComponent() {
     const navigate = useNavigate();
     const { login, isAuthenticated } = useAuthStore();
-    if (isAuthenticated) {
+    
+    useEffect(() => {
+        if (isAuthenticated) {
         navigate('/materias');
     }
+    }, [isAuthenticated, navigate])
+    
 
     const [mail, setMail] = useState(''); 
     const [contrasena, setContrasena] = useState('');
@@ -22,9 +26,11 @@ function LoginComponent() {
         setError('');
         setIsLoading(true);
 
+        console.log("Datos de envío:", { mail, contrasena });
+
         try {
             const response = await apiClient.post('/usuario/login', { mail, contrasena });
-            
+            const resultData = response.data.result;
             const newToken = response.data.result.token;
             const userData = {
                 id: response.data.result.id,
