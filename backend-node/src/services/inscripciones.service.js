@@ -45,9 +45,13 @@ class InscripcionesService {
 
     async GetAlumnosPorMateria(materiaId) {
         const connection = await getConnection()
-        const query = `select usuarios.nombre, materias.nombre as materias from 
-            inscripciones inner join usuarios on alumno_id = usuarios.id inner join 
+        const query = `select 
+            usuarios.nombre, 
+            materias.nombre as materias,
+            inscripciones.fecha_baja 
+            from inscripciones inner join usuarios on alumno_id = usuarios.id inner join 
             materias on materias.id = materia_id where rol_id = 3 and materias.id = ?`
+            
         const result = await connection.query(query, [materiaId])
         return result
     }

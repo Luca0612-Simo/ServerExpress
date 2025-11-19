@@ -11,19 +11,20 @@ import AlumnosManagementComponent from './components/AlumnosManagement';
 import AlumnoFormComponent from './components/AlumnoForm';
 import MateriasManagementComponent from './components/MateriasManagement';
 import MateriaFormComponent from './components/MateriaForm';
+import ReporteInscripciones from './components/ReporteInscripciones';
 
 const AppContent = () => {
-    const { token, isAuthenticated, setLoading, initializeAuth, logout } = useAuthStore();
+    const { token, isAuthenticated, setLoading, initializeAuth, logout, user } = useAuthStore();
     const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
-        
+
         const storedToken = localStorage.getItem('token');
-        
+
         const validateTokenAndInitialize = async (tkn) => {
             if (!tkn) {
-                logout(); 
+                logout();
                 setLoading(false);
                 navigate('/login');
                 return;
@@ -32,26 +33,26 @@ const AppContent = () => {
             apiClient.defaults.headers.common['Authorization'] = `Bearer ${tkn}`;
 
             try {
-                const response = await apiClient.get('/usuario/validate'); 
+                const response = await apiClient.get('/usuario/validate');
 
-                const userData = response.data.user; 
+                const userData = response.data.user;
                 initializeAuth(userData, tkn);
 
             } catch (error) {
                 console.error("Token no válido", error.response?.status);
-                logout(); 
+                logout();
                 navigate('/login');
             } finally {
                 setLoading(false);
             }
         };
-        if (isAuthenticated) { 
-             setLoading(false);
-             return;
+        if (isAuthenticated) {
+            setLoading(false);
+            return;
         }
 
         validateTokenAndInitialize(storedToken);
-    }, [initializeAuth, logout, navigate, isAuthenticated]); 
+    }, [initializeAuth, logout, navigate, isAuthenticated]);
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -59,7 +60,7 @@ const AppContent = () => {
         }
     }, [isAuthenticated, navigate]);
 
-
+    const canViewReports = user?.rol_id === 1 || user?.rol_id === 2;
     return (
         <div className="min-h-screen bg-gray-50">
             <Navbar />
@@ -75,10 +76,13 @@ const AppContent = () => {
                             <Route path="/alumnos/crear" element={<AlumnoFormComponent />} />
                             <Route path="/alumnos/editar/:id" element={<AlumnoFormComponent />} />
                             <Route path="/gestion-materias" element={<MateriasManagementComponent />} />
-                            <Route path="/gestion-materias/crear" element={<MateriaFormComponent/>} /> 
-                            <Route path="/gestion-materias/editar/:id" element={<MateriaFormComponent/>} />
+                            <Route path="/gestion-materias/crear" element={<MateriaFormComponent />} />
+                            <Route path="/gestion-materias/editar/:id" element={<MateriaFormComponent />} />
                             <Route path="*" element={<Dashboard />} />
                         </>
+                    )}
+                    {canViewReports && (
+                        <Route path="/reportes" element={<ReporteInscripciones />} />
                     )}
                     <Route path="*" element={<Dashboard />} />
                 </Routes>
