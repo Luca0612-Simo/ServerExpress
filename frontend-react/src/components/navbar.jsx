@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogOut, BookOpen, LogIn, Home, ListTodo, Users, LayoutDashboard, FileText, Shield } from 'lucide-react';
+import { LogOut, BookOpen, LogIn, Home, ListTodo, Users, LayoutDashboard, FileText, Shield, GraduationCap } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 
@@ -72,6 +72,12 @@ function Navbar() {
                                         label="Personal"
                                         currentPath={currentPath}
                                         to="/personal"
+                                    />
+                                    <NavLink 
+                                    icon={GraduationCap} 
+                                    label="Carreras" 
+                                    currentPath={currentPath} 
+                                    to="/gestion-carreras" 
                                     />
                                 </>
                             )}

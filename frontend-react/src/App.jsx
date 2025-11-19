@@ -13,6 +13,9 @@ import MateriasManagementComponent from './components/MateriasManagement';
 import MateriaFormComponent from './components/MateriaForm';
 import ReporteInscripciones from './components/ReporteInscripciones';
 import UsuariosManagementComponent from './components/UsuariosManagement';
+import CarrerasManagementComponent from './components/CarrerasManagement';
+import CarreraFormComponent from './components/CarreraForm';
+
 
 const AppContent = () => {
     const { token, isAuthenticated, setLoading, initializeAuth, logout, user } = useAuthStore();
@@ -83,7 +86,12 @@ const AppContent = () => {
                         </>
                     )}
                     {user?.rol_id === 1 && (
+                    <>
                         <Route path="/personal" element={<UsuariosManagementComponent />} />
+                        <Route path="/gestion-carreras" element={<CarrerasManagementComponent />} />
+                        <Route path="/gestion-carreras/crear" element={<CarreraFormComponent />} />
+                        <Route path="/gestion-carreras/editar/:id" element={<CarreraFormComponent />} />
+                    </>
                     )}
                     {canViewReports && (
                         <Route path="/reportes" element={<ReporteInscripciones />} />
