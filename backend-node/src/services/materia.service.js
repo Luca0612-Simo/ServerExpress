@@ -30,15 +30,16 @@ class MateriaService{
     }
 
     async EditarMateria(id, datosActualizados) {
-        const { nombre, usuario_modificacion } = datosActualizados
+        const { nombre, carrera_id, usuario_modificacion } = datosActualizados
         const connection = await getConnection()
 
         const query = `update materias set 
             nombre = ?,
+            carrera_id = ?, 
             fecha_modificacion = now(),
             usuario_modificacion = ? where id = ? `
 
-        const values = [nombre, usuario_modificacion, id]
+        const values = [nombre, carrera_id, usuario_modificacion, id] 
 
         const result = await connection.query(query, values)
         return result

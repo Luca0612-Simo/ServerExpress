@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogOut, BookOpen, LogIn, Home, ListTodo, Users } from 'lucide-react';
+import { LogOut, BookOpen, LogIn, Home, ListTodo, Users, LayoutDashboard } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 
@@ -24,6 +24,7 @@ function Navbar() {
     const { user, isAuthenticated, logout } = useAuthStore();
     const isAlumno = user?.rol_id === 3; 
     const isCoordinadorAdmin = user?.rol_id === 1 || user?.rol_id === 2;
+    const isAdministrador = user?.rol_id === 1; 
     const navigate = useNavigate();
     const location = useLocation();
     const currentPath = location.pathname;
@@ -55,6 +56,14 @@ function Navbar() {
                                     label="Mis Materias" 
                                     currentPath={currentPath} 
                                     to="/mis-materias" 
+                                />
+                            )}
+                            {isAdministrador && (
+                                <NavLink 
+                                    icon={LayoutDashboard} 
+                                    label="Gestión Mat." 
+                                    currentPath={currentPath} 
+                                    to="/gestion-materias" 
                                 />
                             )}
                             <NavLink 

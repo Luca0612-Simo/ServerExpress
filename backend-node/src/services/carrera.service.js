@@ -12,6 +12,12 @@ class CarreraService{
         const nuevoId = result.inserId;
         return { nuevoId, ...nuevaCarrera}
     }
+
+    async GetCarreras(){
+        const connection = await getConnection()
+        const data = await connection.query(`select id, nombre from carreras`) 
+        return data
+    }
 }
 
 module.exports = CarreraService

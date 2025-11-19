@@ -22,6 +22,7 @@ const postMateriaSchema = Joi.object({
 
 const putMateriaSchema = Joi.object({
     nombre : nombre.required(),
+    carrera_id : carrera_id.required(),
     usuario_modificacion : usuario_modificacion.required()
 
 })
