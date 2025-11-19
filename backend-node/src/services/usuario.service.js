@@ -50,6 +50,24 @@ class UsuarioService{
         const nuevoId = result.insertId;
         return { nuevoId, ...usuarioNuevo }
     }
+
+    async GetPersonal() {
+        const connection = await getConnection()
+        const data = await connection.query(`select id, nombre, mail, usuario, rol_id 
+            from usuarios where rol_id IN (1, 2) and fecha_baja is null`)
+        return data
+    }
+
+    async EliminarUsuario(id, usuario_baja) {
+        const connection = await getConnection()
+        const query = `update usuarios set 
+        fecha_baja = now(),
+        usuario_baja = ? where id = ?` 
+
+        const values = [usuario_baja, id]
+        const result = await connection.query(query, values)
+        return result
+    }
 }
 
 module.exports = UsuarioService

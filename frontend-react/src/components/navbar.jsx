@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogOut, BookOpen, LogIn, Home, ListTodo, Users, LayoutDashboard, FileText } from 'lucide-react';
+import { LogOut, BookOpen, LogIn, Home, ListTodo, Users, LayoutDashboard, FileText, Shield } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuthStore from '../store/useAuthStore';
 
@@ -22,9 +22,9 @@ const NavLink = ({ to, label, icon: Icon, currentPath }) => {
 
 function Navbar() {
     const { user, isAuthenticated, logout } = useAuthStore();
-    const isAlumno = user?.rol_id === 3; 
+    const isAlumno = user?.rol_id === 3;
     const isCoordinadorAdmin = user?.rol_id === 1 || user?.rol_id === 2;
-    const isAdministrador = user?.rol_id === 1; 
+    const isAdministrador = user?.rol_id === 1;
     const canViewReports = user?.rol_id === 1 || user?.rol_id === 2;
     const navigate = useNavigate();
     const location = useLocation();
@@ -44,65 +44,73 @@ function Navbar() {
                 <div className="flex items-center space-x-4">
                     {isAuthenticated ? (
                         <>
-                            <NavLink 
+                            <NavLink
                                 icon={Home}
                                 label="Dashboard"
                                 currentPath={currentPath}
                                 to="/"
                             />
-                            {}
+                            { }
                             {isAlumno && (
-                                <NavLink 
-                                    icon={ListTodo} 
-                                    label="Mis Materias" 
-                                    currentPath={currentPath} 
-                                    to="/mis-materias" 
+                                <NavLink
+                                    icon={ListTodo}
+                                    label="Mis Materias"
+                                    currentPath={currentPath}
+                                    to="/mis-materias"
                                 />
                             )}
                             {isAdministrador && (
-                                <NavLink 
-                                    icon={LayoutDashboard} 
-                                    label="Gestión Mat." 
-                                    currentPath={currentPath} 
-                                    to="/gestion-materias" 
-                                />
+                                <>
+                                    <NavLink
+                                        icon={LayoutDashboard}
+                                        label="Gestión Mat."
+                                        currentPath={currentPath}
+                                        to="/gestion-materias"
+                                    />
+                                    <NavLink
+                                        icon={Shield}
+                                        label="Personal"
+                                        currentPath={currentPath}
+                                        to="/personal"
+                                    />
+                                </>
                             )}
                             {canViewReports && (
-                                <NavLink 
-                                    icon={FileText} 
-                                    label="Reportes" 
-                                    currentPath={currentPath} 
-                                    to="/reportes" 
+                                <NavLink
+                                    icon={FileText}
+                                    label="Reportes"
+                                    currentPath={currentPath}
+                                    to="/reportes"
                                 />
                             )}
-                            <NavLink 
-                                icon={BookOpen} 
-                                label="Materias" 
-                                currentPath={currentPath} 
-                                to="/materias" 
+                            <NavLink
+                                icon={BookOpen}
+                                label="Materias"
+                                currentPath={currentPath}
+                                to="/materias"
                             />
                             {isCoordinadorAdmin && (
-                                <NavLink 
-                                    icon={Users} 
-                                    label="Alumnos" 
-                                    currentPath={currentPath} 
-                                    to="/alumnos" 
+                                <NavLink
+                                    icon={Users}
+                                    label="Alumnos"
+                                    currentPath={currentPath}
+                                    to="/alumnos"
                                 />
                             )}
                             <button
                                 onClick={handleLogout}
                                 className="px-3 py-1.5 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition duration-150 flex items-center"
                             >
-                                <LogOut className="w-4 h-4 mr-1" /> 
+                                <LogOut className="w-4 h-4 mr-1" />
                                 Salir ({user?.usuario || 'Cargando...'})
                             </button>
                         </>
                     ) : (
-                        <NavLink 
-                            icon={LogIn} 
-                            label="Login" 
-                            currentPath={currentPath} 
-                            to="/login" 
+                        <NavLink
+                            icon={LogIn}
+                            label="Login"
+                            currentPath={currentPath}
+                            to="/login"
                         />
                     )}
                 </div>

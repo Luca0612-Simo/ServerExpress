@@ -31,8 +31,34 @@ async function validateToken(req, res, next) {
     }
 }
 
+async function GetPersonal(req, res, next) {
+    try {
+        const result = await service.GetPersonal()
+        res.send(result)
+    } catch (error) {
+        next(error)
+    }
+}
+
+async function EliminarUsuario(req, res, next) {
+    try {
+        const id = req.params.id
+        const usuario_baja = req.user.usuario
+        const result = await service.EliminarUsuario(id, usuario_baja)
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+        res.send({ mensaje: 'Usuario dado de baja correctamente', result })
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     login,
     crearUsuario,
     validateToken,
+    GetPersonal,
+    EliminarUsuario,
 }
