@@ -12,6 +12,7 @@ import AlumnoFormComponent from './components/AlumnoForm';
 import MateriasManagementComponent from './components/MateriasManagement';
 import MateriaFormComponent from './components/MateriaForm';
 import ReporteInscripciones from './components/ReporteInscripciones';
+import UsuariosManagementComponent from './components/UsuariosManagement';
 
 const AppContent = () => {
     const { token, isAuthenticated, setLoading, initializeAuth, logout, user } = useAuthStore();
@@ -80,6 +81,9 @@ const AppContent = () => {
                             <Route path="/gestion-materias/editar/:id" element={<MateriaFormComponent />} />
                             <Route path="*" element={<Dashboard />} />
                         </>
+                    )}
+                    {user?.rol_id === 1 && (
+                        <Route path="/personal" element={<UsuariosManagementComponent />} />
                     )}
                     {canViewReports && (
                         <Route path="/reportes" element={<ReporteInscripciones />} />

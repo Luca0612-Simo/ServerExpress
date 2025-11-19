@@ -53,20 +53,27 @@ const AlumnoFormComponent = () => {
             const endpoint = isEditing ? `/alumno/${id}` : '/usuario';
             const method = isEditing ? 'put' : 'post';
 
-            const auditField = isEditing ? { usuario_modificacion: user.usuario } : { usuario_alta: user.usuario, rol_id: 3 };
+            const auditField = isEditing ? { usuario_modificacion: user.usuario } : { usuario_alta: user.usuario };
 
-            const dataToSend = isEditing ?
-                { ...formData, ...auditField } :
-                { ...formData, rol_id: 3, ...auditField };
+            const dataToSend = {
+                ...formData,
+                rol_id: Number(formData.rol_id), 
+                ...auditField
+            };
 
-            if (isEditing && dataToSend.contrasena === '') {
+            if (isEditing && (!dataToSend.contrasena || dataToSend.contrasena.trim() === '')) {
                 delete dataToSend.contrasena;
             }
 
             const response = await apiClient[method](endpoint, dataToSend);
 
             alert(response.data.mensaje);
-            navigate('/alumnos');
+
+            if (Number(dataToSend.rol_id) === 3) {
+                navigate('/alumnos');
+            } else {
+                navigate('/personal'); 
+            }
 
         } catch (err) {
             console.error("Error al guardar:", err.response?.data);
@@ -86,53 +93,43 @@ const AlumnoFormComponent = () => {
 
                 {error && <p className="text-red-600 text-sm mb-4 bg-red-100 p-2 rounded-md">{error}</p>}
 
-                { }
-
-                { }
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">Nombre</label>
                     <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required className="w-full px-4 py-2 border rounded-md" />
                 </div>
 
-                { }
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">Correo</label>
                     <input type="email" name="mail" value={formData.mail} onChange={handleChange} required className="w-full px-4 py-2 border rounded-md" />
                 </div>
 
-                { }
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">Usuario</label>
                     <input type="text" name="usuario" value={formData.usuario} onChange={handleChange} required className="w-full px-4 py-2 border rounded-md" />
                 </div>
 
-                { }
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">Contraseña {isEditing && "(Dejar vacío para mantener la actual)"}</label>
                     <input type="password" name="contrasena" value={formData.contrasena} onChange={handleChange} required={!isEditing} className="w-full px-4 py-2 border rounded-md" />
                 </div>
 
-                { }
-                {!isEditing && (
-                    <div className="mb-6">
-                        <label className="block text-gray-700 text-sm font-semibold mb-2">Rol</label>
-                        <select
-                            name="rol_id"
-                            value={formData.rol_id}
-                            onChange={handleChange}
-                            className="w-full px-4 py-2 border rounded-md"
-                            disabled={!isCreatorAdmin && !isEditing}
-                        >
-                            <option value={1}>Administrador</option>
-                            <option value={2}>Coordinador</option>
-                            <option value={3}>Alumno</option>
-                        </select>
-                    </div>
-                )}
-
+                <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">Rol</label>
+                    <select
+                        name="rol_id"
+                        value={formData.rol_id}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border rounded-md"
+                        disabled={!isCreatorAdmin && !isEditing}
+                    >
+                        <option value={1}>Administrador</option>
+                        <option value={2}>Coordinador</option>
+                        <option value={3}>Alumno</option>
+                    </select>
+                </div>
 
                 <Boton
-                    label={isLoading ? 'Guardando...' : `${isEditing ? 'Actualizar' : 'Crear'} Alumno`}
+                    label={isLoading ? 'Guardando...' : `${isEditing ? 'Actualizar' : 'Crear'} Usuario`}
                     onClick={handleSubmit}
                     disabled={isLoading}
                     className="w-full justify-center mt-4 flex items-center"
