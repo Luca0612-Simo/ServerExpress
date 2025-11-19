@@ -11,6 +11,16 @@ async function CrearCarrera(req,res,next) {
     }
 }
 
+async function GetCarreras(req, res, next) {
+    try {
+        const result = await service.GetCarreras()
+        res.send(result)
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     CrearCarrera,
+    GetCarreras,
 }
